@@ -6,3 +6,4 @@
 - Encrypt + Sign/Decrypt + Verify files using private/public certificates
 - Use Python, C/C++, C#, Java, JavaScript
 - Make software application for desktop, web or mobile.
+<img src="https://fossa.com/blog/content/images/2022/10/openssl.png" width="500" height="250" />
