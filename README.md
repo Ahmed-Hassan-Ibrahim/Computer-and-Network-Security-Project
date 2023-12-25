@@ -14,9 +14,6 @@
 
 # Commands
 
-## Decryption
-
-python .\AES.py -dec <file_name> -key <key_file_name>
 
 ## AES Encryption Providing Key
 
@@ -26,7 +23,7 @@ python .\App.py -enc <file_name> -key <key_file_name>
 
 * Can encrypt/decrypt any binary file.
 
-## AES Encryption Generated Key
+## AES Encryption Using a Generated Key
 
 ```
 python .\App.py -enc <file_name> -gen
@@ -39,7 +36,8 @@ python .\App.py -enc <file_name> -gen
 ```
 python .\App.py -dec <file_name> -key <key_file_name>
 ```
-## Key Generation
+
+## RSA Key Generation
 
 ```
 python .\App.py -rsa -gen  
@@ -48,17 +46,20 @@ python .\App.py -rsa -gen
 ## RSA Encryption Providing Key
 
 ```
-python .\App.py -rsa -enc -inkey <Public_Key_File_Name> <file_name>
+python .\App.py -rsa -enc -inkey <public_key_file_name> <file_name>
 ```
 ## RSA Encryption Generated Key
 
 ```
 python .\App.py -rsa -enc -gen <file_name>
 ```
+
+* *Note:* key is written to a file security is your responsibility.
+
 ## RSA Decryption Providing Key
 
 ```
-python .\App.py -rsa -dec -inkey <Private_Key_File_Name> <Message_Encrypted_File_Name>  
+python .\App.py -rsa -dec -inkey <private_key_file_name> <message_encrypted_file_name>  
 ```
 
 ## RSA Signature
@@ -66,24 +67,54 @@ python .\App.py -rsa -dec -inkey <Private_Key_File_Name> <Message_Encrypted_File
 ```
 python .\App.py -rsa -sign -gen <file_name>  
 ```
+
 ## RSA Verification
 
 ```
-python .\App.py -rsa -verify -inkey <Public_Key_File_Name> <file_name> <Signed_Message_File_Name> 
+python .\App.py -rsa -verify -inkey <public_key_file_name> <file_name> <signed_message_file_name> 
 ```
+
 ## Hashing
 
 ```
-python App.py -hash "Algorithm type" <file_name>
+python App.py -hash <algorithm_type> <file_name>
 ```
+* **Valid algorithms :**
+    * `md5`
+    * `sha1`
+    * `sha224`
+    * `sha256`
+    * `sha384`
+    * `sha512`
+    * `blake2b`
+    * `blake2s`
+    * `sha3_224`
+    * `sha3_256`
+    * `sha3_384`
+    * `sha3_512`
+    * `shake_128`
+    * `shake_256`
+
+# Confidentiality + Authentication
+
+<p align="center">
+  <img src="./Images/conf.jpg"
+       width="100%" 
+       style="border-radius: 30px;"/>
+</p>
+
 ## Prepare Confidentiality + Authentication
+
 ```
 python App.py -sign <file_name>  
 ```
+
 ## Verify Confidentiality + Authentication
+
 ```
-python App.py -verify <Message_Encrypted_File_Name>  <Symmetric_Key_File_Name> <Public_Key_File_Name>  
+python App.py -verify <Message_Encrypted_File_Name>  <symmetric_key_file_name> <public_key_file_name>  
 ```
+
 
 ## Self_Certification
 
