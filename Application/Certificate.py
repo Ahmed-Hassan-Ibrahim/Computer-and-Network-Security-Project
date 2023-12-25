@@ -69,8 +69,6 @@ def save_certificate(certificate, filename):
         f.write(certificate.public_bytes(serialization.Encoding.PEM))
 
 if __name__ == "__main__":
-
-
     subject_name = "sis.com"
     issuer_name = "EGauthority.com"
 

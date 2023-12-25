@@ -1,48 +1,46 @@
+import sys
 import AES
+import datetime
 import RSA
 import Hash
-import sys
 import Signing
 import Certificate
-from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends.openssl import backend
 from base64 import urlsafe_b64encode
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography import x509
 from cryptography.x509.oid import NameOID
-import datetime
 from cryptography.hazmat.primitives import hashes
 
 if __name__ == "__main__":
     #AES============================================================
-    '''
-    choice = sys.argv[1]
-    input_filename = sys.argv[2]
-    key_choice = sys.argv[3]
-    if len(sys.argv) == 5:
-        key_file = sys.argv[4]
-    else:
-        key_file = 0
-    AES.openssl_info()
-    encryption_output_folder = 'encryption'
-    decryption_output_folder = 'decryption'
+    if sys.argv[1].lower() == "-enc" or sys.argv[1].lower() == '-dec' :
+        choice = sys.argv[1]
+        input_filename = sys.argv[2]
+        key_choice = sys.argv[3]
+        if len(sys.argv) == 5:
+            key_file = sys.argv[4]
+        else:
+            key_file = 0
+        AES.openssl_info()
+        encryption_output_folder = 'encryption'
+        decryption_output_folder = 'decryption'
 
-    encryption_key = AES.get_encryption_key(key_choice,key_file,choice.lower())
+        encryption_key = AES.get_encryption_key(key_choice,key_file,choice.lower())
 
-    if choice.lower() == '-enc' :
-        AES.encrypt_file(input_filename, encryption_output_folder, encryption_key)
-        print("Encryption Successful...")
-    elif choice.lower() == '-dec':
-        AES.decrypt_file(input_filename, decryption_output_folder, encryption_key)
-        print("Decryption Successful...")
-    '''
+        if choice.lower() == '-enc' :
+            AES.encrypt_file(input_filename, encryption_output_folder, encryption_key)
+            print("Encryption Successful...")
+        elif choice.lower() == '-dec':
+            AES.decrypt_file(input_filename, decryption_output_folder, encryption_key)
+            print("Decryption Successful...")
+    
     #RSA============================================================
     if sys.argv[1] == "-rsa":
         if sys.argv[2] == "-gen":

@@ -1,3 +1,4 @@
+import sys
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
@@ -6,12 +7,12 @@ from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.serialization import load_pem_public_key
 
-
-import sys
-
+# Generate asymmetric
 def generate_key():
     return Fernet.generate_key()
 
+
+# Symmetric Encryption/Decryption
 def symmetric_encryption(message, key):
     cipher_suite = Fernet(key)
     encrypted_message = cipher_suite.encrypt(message)
@@ -22,6 +23,8 @@ def symmetric_decryption(encrypted_message, key):
     decrypted_message = cipher_suite.decrypt(encrypted_message)
     return decrypted_message
 
+
+# RSA
 def encrypt_message(message, key):
     ciphertext = key.encrypt(
         message,
@@ -88,49 +91,58 @@ def verify_signature(message, signature, public_key):
         return False  # Signature is invalid
 
 def Source_Confidentiality_Authentication(path):
+    # Open file
     with open(path, 'rb') as file:
         message = file.read()
+
     private_key, public_key = generate_key_pair()
     
     encrypted_signature = sign_message(message, private_key)
 
     symmetric_key = generate_key()
 
+    # Concatenate hash and message
     combined_data = message + encrypted_signature
     encrypted_message = symmetric_encryption(combined_data,symmetric_key)
-
-    print(combined_data)
-    print(type(symmetric_key))
 
     with open("message_encrypted.txt", "wb") as f:
         f.write(encrypted_message)
 
+    # Serialize Key
     public_key_bytes = public_key.public_bytes(
-    encoding=serialization.Encoding.PEM,
-    format=serialization.PublicFormat.SubjectPublicKeyInfo
-)
-# Write the bytes to a file
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    )
+    # Write the bytes to a file
     with open("public_key.pem", "wb") as f:
         f.write(public_key_bytes)
     
     with open("Symmetric_Key.pem", "wb") as f:
         f.write(symmetric_key)
+
     return symmetric_key,public_key,encrypted_message
     
 
 def Destination_Confidentiality_Authentication(encrypted_message_path, symmetric_key_path, public_key_path):
+    # Open files
     with open(encrypted_message_path, 'rb') as file:
         encrypted_message = file.read()
     with open(public_key_path, "rb") as key_file:
         key = key_file.read()
+        # Load .pem key to an RSA key object
         public_key = load_pem_public_key(key)
     with open(symmetric_key_path, 'rb') as file:
         symmetric_key = file.read()
+
     decrypted_combined_data = symmetric_decryption(encrypted_message,symmetric_key)
+
+    # Seperate hash and message
     decrypted_message = decrypted_combined_data[:-256]  # Assuming the hash length is 256 bits
     decrypted_signature = decrypted_combined_data[-256:]
+
     print("Decrypted Message:", decrypted_message)
     print("Decrypted Signature:", decrypted_signature)
+
     is_verified = verify_signature(decrypted_message,decrypted_signature,public_key)
     return is_verified
 
@@ -143,7 +155,6 @@ def main():
         print("Verified")
     else:
         print("Not Verified")
-        
 
 if __name__ == "__main__":
     main()
