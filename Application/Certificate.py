@@ -77,4 +77,4 @@ if __name__ == "__main__":
 
     save_private_key(private_key, "private_key.pem")
     save_public_key(public_key, "public_key.pem")
-    save_certificate(certificate, "certificate.pem")
+    save_certificate(certificate, "certificate.crt")
